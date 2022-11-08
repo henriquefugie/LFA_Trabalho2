@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://prefabs/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prefabs/kula.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 234.5, 14 )
+
+[node name="World" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2( 160, 207 )
+shape = SubResource( 1 )
+
+[node name="player" parent="Ground" instance=ExtResource( 2 )]
+position = Vector2( 22, 184 )
+
+[node name="kula" parent="Ground" instance=ExtResource( 3 )]
+visible = false
+position = Vector2( 189, 181 )
+jump_force = 100
+
+[node name="Sprite" type="Sprite" parent="Ground"]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 158, 208 )
+scale = Vector2( 7.34375, 0.484375 )
+texture = ExtResource( 1 )

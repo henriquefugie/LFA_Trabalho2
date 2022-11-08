@@ -1,0 +1,69 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://assets/sprites/Kula Diamond/sprites/idle.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://scripts/player/kula.gd" type="Script" id=2]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_1.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_3.png" type="Texture" id=4]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_33.png" type="Texture" id=9]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_23.png" type="Texture" id=10]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_31.png" type="Texture" id=12]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_35.png" type="Texture" id=13]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_27.png" type="Texture" id=15]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_29.png" type="Texture" id=16]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_25.png" type="Texture" id=18]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_21.png" type="Texture" id=20]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_11.png" type="Texture" id=21]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_13.png" type="Texture" id=24]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_7.png" type="Texture" id=26]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_17.png" type="Texture" id=29]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_9.png" type="Texture" id=30]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_19.png" type="Texture" id=33]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_15.png" type="Texture" id=35]
+[ext_resource path="res://assets/sprites/Kula Diamond/Kula Diamond_5.png" type="Texture" id=36]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8.75, 26.25 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 36 ), ExtResource( 26 ), ExtResource( 30 ), ExtResource( 21 ), ExtResource( 24 ), ExtResource( 35 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 20 ), ExtResource( 10 ), ExtResource( 18 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 12 ), ExtResource( 9 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "idle",
+"speed": 10.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[node name="kula" type="KinematicBody2D"]
+position = Vector2( 0, 1 )
+script = ExtResource( 2 )
+jump_force = 80
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( -0.25, -27.75 )
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
+position = Vector2( -13, -42 )
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 2 )
+animation = "idle"
+frame = 13
+playing = true
+centered = false
+flip_h = true
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -13, -54 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 4
+z_as_relative = false
+frames = ExtResource( 1 )
+animation = "jump"
+frame = 6
+centered = false
+flip_h = true
