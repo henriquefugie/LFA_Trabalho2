@@ -1,12 +1,12 @@
 class_name CharacterBase extends KinematicBody2D
 
-enum StateMachine { IDLE, WALK, JUMP, FALL, JUMP2, ATK1, ATK2, ATK3, CROUNCH, ESPECIAL}
+enum StateMachine { IDLE, WALK, JUMP, FALL, JUMP2, ATK1, ATK2, ATK3, CROUNCH, ESPECIAL, COMBO}
 
 export var speed := 100
 export var jump_force := 100
 export var gravity := 98
 
-var state = StateMachine.WALK
+var state = StateMachine.IDLE
 var motion := Vector2()
 var animation := ""
 var direction = 0
@@ -15,9 +15,11 @@ var enter_state := true
 onready	var sprite: Sprite = get_node("Sprite")
 onready	var animator: AnimationPlayer = get_node("AnimationPlayer")
 onready var timer_attack: Timer = get_node("TimerAttack")
+onready var combo_timer: Timer = get_node("comboTimer")
 
 func _process(delta: float) -> void:
 	direction = Input.get_axis("ui_left", "ui_right")
+
 	
 func _physics_process(delta: float) -> void:
 	motion = move_and_slide(motion, Vector2.UP)

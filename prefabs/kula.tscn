@@ -40,7 +40,6 @@ animations = [ {
 [node name="kula" type="KinematicBody2D"]
 position = Vector2( 0, 1 )
 script = ExtResource( 2 )
-jump_force = 80
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -48,22 +47,24 @@ position = Vector2( -0.25, -27.75 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
-position = Vector2( -13, -42 )
-scale = Vector2( 0.5, 0.5 )
+position = Vector2( 0.999998, -40 )
+scale = Vector2( 0.8, 0.8 )
 frames = SubResource( 2 )
 animation = "idle"
-frame = 13
+frame = 1
 playing = true
-centered = false
 flip_h = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -13, -54 )
-scale = Vector2( 0.5, 0.5 )
+position = Vector2( 1.19209e-07, -48 )
+scale = Vector2( 0.8, 0.8 )
 z_index = 4
 z_as_relative = false
 frames = ExtResource( 1 )
-animation = "jump"
-frame = 6
-centered = false
+animation = "idle"
+playing = true
 flip_h = true
+
+[node name="TimerAttack" type="Timer" parent="."]
+wait_time = 1.005
+one_shot = true

@@ -3,10 +3,12 @@ extends CharacterBase
 export var max_jumps := 2
 var combostage := 0
 var jumps := 0
-var sequence = []
-var moves = {"especial1" : ["ui_down","direction","ui_attack"]}
 
 func _process(delta: float) -> void:
+	if combo_timer.time_left > 0:
+		print(combo_timer.time_left)
+	print(combostage)
+	
 	match state:
 		StateMachine.IDLE: _state_idle(delta)
 		StateMachine.WALK: _state_walk(delta)
@@ -17,16 +19,14 @@ func _process(delta: float) -> void:
 		StateMachine.ATK2: _state_atk2(delta)
 		StateMachine.ATK3: _state_atk3(delta)
 		StateMachine.CROUNCH: _state_crounch(delta)
+		StateMachine.COMBO: _state_combo(delta)
 		StateMachine.ESPECIAL: _state_especial(delta)
 		
 func _state_idle(delta: float) -> void:
 	_set_animation("idle")	
 	_apply_gravity(delta)
 	_stop_movement()
-	
-	if enter_state:
-		combostage = 0
-		
+
 	if direction:
 		_enter_state(StateMachine.WALK)
 	if Input.is_action_just_pressed("ui_up"):
@@ -37,13 +37,22 @@ func _state_idle(delta: float) -> void:
 		_enter_state(StateMachine.CROUNCH)
 	if Input.is_action_just_pressed("ui_especial"):
 		_enter_state(StateMachine.ESPECIAL)
-
+	if combostage == 2:
+		_enter_state(StateMachine.COMBO)
+	if combostage >3:
+		combostage = 0
 
 func _state_walk(delta: float) -> void:
+
 	_set_animation("walk")
 	_apply_gravity(delta)
 	_move_and_slide(delta)
 	_set_flip()
+	
+	if enter_state:
+		enter_state = false
+		if combostage != 0:
+			combostage += 1
 	
 	if not direction:
 		_enter_state(StateMachine.IDLE)
@@ -53,6 +62,19 @@ func _state_walk(delta: float) -> void:
 		_enter_state(StateMachine.ATK1)
 	if Input.is_action_just_pressed("ui_down"):
 		_enter_state(StateMachine.CROUNCH)
+		
+	
+func _state_crounch(delta: float) -> void:
+	_set_animation("crounch")
+	_stop_movement()
+	
+	if enter_state:
+		enter_state = false
+		if combostage != 1:
+			combostage += 1
+		
+	if Input.is_action_just_released("ui_down"):
+		_enter_state(StateMachine.IDLE)
 		
 func _state_jump(delta: float) -> void:
 	_set_animation("jump")
@@ -134,36 +156,24 @@ func _state_atk3(delta: float) -> void:
 		enter_state = false
 		timer_attack.wait_time = 0.6
 		timer_attack.start()
-	
-func _state_crounch(delta: float) -> void:
-	_set_animation("crounch")
-	_stop_movement()
-	
-	
-	if enter_state:
-		enter_state = false
-		timer_attack.start()
-		combostage += 1
-	if direction:
-		timer_attack.stop()
-		_set_flip()
-		timer_attack.start()
-		if Input.is_action_just_released("ui_down"):
-			timer_attack.stop()
-			timer_attack.start()
-			if Input.is_action_pressed("ui_attack"):
-				timer_attack.stop()
-				_enter_state(StateMachine.ESPECIAL)
-#	if Input.is_action_just_released("ui_down") and direction:
-#		_enter_state(StateMachine.WALK)
-#	if Input.is_action_just_released("ui_down") and not direction:
-#			_enter_state(StateMachine.IDLE)
-	
-		
 		
 func _state_especial(delta: float) -> void:
-	_set_animation("especial")
 	_stop_movement()
+	_set_animation("especial")
+	 
+	if enter_state:
+		enter_state = false
+		yield(get_tree().create_timer(1.0), "timeout")
+		_enter_state(StateMachine.IDLE)
+		
+func _state_combo(delta: float) -> void:
+	
+	if enter_state:
+		combo_timer.start()
+	if Input.is_action_just_pressed("ui_attack"):
+		combo_timer.stop()
+		combostage = 0
+		_enter_state(StateMachine.ESPECIAL)
 	 
 	if enter_state:
 		enter_state = false
@@ -171,4 +181,8 @@ func _state_especial(delta: float) -> void:
 		_enter_state(StateMachine.IDLE)
 		
 func _on_TimerAttack_timeout():
+	_enter_state(StateMachine.IDLE)
+	
+func _on_comboTimer_timeout():
+	combostage = 0
 	_enter_state(StateMachine.IDLE)
