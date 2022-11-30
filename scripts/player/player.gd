@@ -3,6 +3,8 @@ extends CharacterBase
 export var max_jumps := 2
 var combostage := 0
 var jumps := 0
+var sequence = []
+var moves = {"especial1" : ["ui_down","direction","ui_attack"]}
 
 func _process(delta: float) -> void:
 	match state:

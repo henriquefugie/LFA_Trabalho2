@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "CharacterBase2",
 "language": "GDScript",
-"path": "res://character_base2.gd"
+"path": "res://scripts/kula/character_base2.gd"
 } ]
 _global_script_class_icons={
 "CharacterBase": "",
